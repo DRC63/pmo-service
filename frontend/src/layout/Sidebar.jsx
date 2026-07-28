@@ -10,6 +10,14 @@ const LINKS = [
   { to: '/settings', label: 'Settings' },
 ];
 
+// Points at the local static-site server while working on localhost; swaps
+// to the real domain automatically once this app is served from
+// app.p3mai.com, so there's nothing to remember to change at deploy time.
+const isLocal = /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname);
+const WEBSITE_URL = isLocal
+  ? 'http://localhost:4173/services.html'
+  : 'https://p3mai.com/services.html';
+
 export default function Sidebar() {
   return (
     <aside className="sidebar">
@@ -29,10 +37,7 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
-      <a
-        className="sidebar-back"
-        href="http://localhost:4173/services.html"
-      >
+      <a className="sidebar-back" href={WEBSITE_URL}>
         <span aria-hidden="true">&larr;</span> Back to Website
       </a>
     </aside>
