@@ -7,12 +7,25 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from .database import Base, engine
+from .database import Base, SessionLocal, engine
+from .models import Project
 from .routers import allocations, dashboard, milestones, projects, reports, resources, risks
+from .seed import seed as seed_db
 
 load_dotenv()
 
 Base.metadata.create_all(bind=engine)
+
+# Seeds sample data on first boot against an empty database - e.g. a fresh
+# deploy, or after a host with ephemeral disk (like Render's free tier)
+# wipes it on restart. Idempotent: does nothing once real projects exist.
+# Skipped under pytest (PYTEST_CURRENT_TEST is set by pytest itself) - tests
+# import this module too, but must never touch the real pmo.db; they use
+# their own isolated per-test database via the get_db dependency override.
+if "PYTEST_CURRENT_TEST" not in os.environ:
+    with SessionLocal() as _db:
+        if _db.query(Project).count() == 0:
+            seed_db(_db)
 
 app = FastAPI(title="PMO Service API")
 
