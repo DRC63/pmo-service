@@ -1,4 +1,6 @@
-const BASE = '/api';
+// API lives under the app's base path so it survives being served behind the
+// shared front door: '/api' at the root, '/pmo/api' when built with APP_BASE.
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '') + '/api';
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {

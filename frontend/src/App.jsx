@@ -12,9 +12,13 @@ function Page({ title, children }) {
   return <AppLayout title={title}>{children}</AppLayout>;
 }
 
+// Serve under the Vite base path (e.g. '/pmo') when deployed behind the shared
+// apps.p3mai.com front door; '/' (default) locally and at the root.
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || undefined;
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/" element={<Page title="Dashboard"><Dashboard /></Page>} />
         <Route path="/projects" element={<Page title="Projects"><Projects /></Page>} />
