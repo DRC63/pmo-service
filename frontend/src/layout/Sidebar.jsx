@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router';
-import logo from '../assets/logo-triangle-white.svg';
+import logo from '../assets/logo-lockup.svg';
 
 const LINKS = [
   { to: '/', label: 'Dashboard', end: true },
