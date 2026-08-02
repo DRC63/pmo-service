@@ -4,10 +4,10 @@ WORKDIR /app/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 COPY frontend/ ./
-# Base path the SPA is built under. Default '/' (root deploy). Render passes the
-# service's APP_BASE env var as a build arg, so setting APP_BASE=/pmo/ makes this
-# build serve behind the shared apps.p3mai.com front door.
-ARG APP_BASE=/
+# Base path the SPA is built under. This service lives behind the shared front
+# door at apps.p3mai.com/pmo, so the prod build defaults to /pmo/. (Local dev
+# doesn't use this Dockerfile — Vite serves at / via vite.config's APP_BASE||'/'.)
+ARG APP_BASE=/pmo/
 ENV APP_BASE=$APP_BASE
 RUN npm run build
 

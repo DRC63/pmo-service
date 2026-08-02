@@ -2,9 +2,9 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from .database import Base, SessionLocal, engine
@@ -37,6 +37,21 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# The PMO app has moved under the shared front door at apps.p3mai.com/pmo.
+# The legacy custom domain app.p3mai.com still points at this service, so
+# 301-redirect any traffic on that host to the new home (preserving the deep
+# path). Requests via the front-door proxy arrive with the onrender Host, not
+# app.p3mai.com, so they're served normally — only direct legacy hits redirect.
+@app.middleware("http")
+async def redirect_legacy_domain(request: Request, call_next):
+    if request.headers.get("host", "").split(":")[0].lower() == "app.p3mai.com":
+        target = f"https://apps.p3mai.com/pmo{request.url.path}"
+        if request.url.query:
+            target += f"?{request.url.query}"
+        return RedirectResponse(target, status_code=301)
+    return await call_next(request)
+
 
 app.include_router(projects.router)
 app.include_router(milestones.router)
