@@ -1,3 +1,8 @@
+"""HTTP endpoints for allocations — how much of a resource's capacity is committed
+to a project. Because only one allocation may exist per (resource, project) pair,
+a duplicate trips the database unique constraint (IntegrityError), which is caught
+and returned as a clear 409 Conflict rather than a 500.
+"""
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session

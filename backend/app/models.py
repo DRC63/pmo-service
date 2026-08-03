@@ -1,3 +1,16 @@
+"""SQLAlchemy ORM models — the PMO domain, centred on projects.
+
+  Project      a piece of work with dates, a budget, a RAG status and an owner.
+  Milestone    a dated checkpoint within a project.
+  Resource     a person, with a weekly capacity in hours.
+  Allocation   how much of a resource is committed to a project (a % of capacity);
+               one row per (resource, project) pair (enforced by a unique constraint).
+  Risk         a project risk scored likelihood × impact, with a status and owner.
+
+Milestones, risks and allocations are declared with cascade delete-orphan, so
+removing a project (or a resource) also removes the records that hang off it and
+leaves no orphans behind.
+"""
 from datetime import date, datetime
 
 from sqlalchemy import (
@@ -119,6 +132,8 @@ class Risk(Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     likelihood: Mapped[int] = mapped_column(Integer, nullable=False)
     impact: Mapped[int] = mapped_column(Integer, nullable=False)
+    # score is stored (not derived on read) so the database can sort and filter on
+    # it directly; it is kept equal to likelihood × impact when a risk is written.
     score: Mapped[int] = mapped_column(Integer, nullable=False)
     status: Mapped[str] = mapped_column(String, default=RiskStatus.OPEN.value)
     mitigation_plan: Mapped[str | None] = mapped_column(Text, nullable=True)

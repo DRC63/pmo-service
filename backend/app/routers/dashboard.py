@@ -1,3 +1,8 @@
+"""Read-only aggregate endpoints for the dashboard: portfolio-wide counts, the RAG
+status breakdown, upcoming/overdue milestones, and high-severity risk totals. These
+compute summaries across all projects, so they query the models directly rather
+than going through the per-record crud helpers.
+"""
 from datetime import date, timedelta
 
 from fastapi import APIRouter, Depends

@@ -1,3 +1,7 @@
+"""Read-only reporting endpoints. Each project is rolled up into a status summary
+(milestone progress, open/high risks, RAG) suitable for a status report or export,
+so the numbers a stakeholder sees are computed one way, in one place.
+"""
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -8,6 +12,8 @@ from ..enums import MilestoneStatus, RiskStatus
 router = APIRouter(prefix="/api/reports", tags=["reports"])
 
 
+# Condense one project into the summary numbers a status report needs: milestone
+# counts by state, risk counts (open / high-severity), and the headline RAG.
 def _project_rollup(project: models.Project) -> dict:
     milestones = project.milestones
     complete = sum(1 for m in milestones if m.status == MilestoneStatus.COMPLETE.value)

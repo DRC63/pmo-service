@@ -40,6 +40,9 @@ def serialize_allocation(allocation: models.Allocation) -> schemas.AllocationOut
 
 
 def serialize_milestone(milestone: models.Milestone) -> schemas.MilestoneOut:
+    # is_overdue is a read-time convenience for the UI (a milestone past its due
+    # date that isn't complete). It's derived here rather than stored so it can
+    # never go stale as the date rolls over.
     is_overdue = bool(
         milestone.due_date
         and milestone.due_date < date.today()

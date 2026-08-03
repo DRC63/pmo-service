@@ -1,3 +1,11 @@
+"""Pydantic request/response schemas — the API contract.
+
+Each resource typically has a Base (shared fields), Create/Update variants (what a
+client may send) and an Out variant (what the API returns, including enriched
+fields such as owner_name that aren't stored columns). Keeping these separate from
+the ORM models lets the wire format evolve independently of the database and gives
+FastAPI its automatic request validation and generated docs.
+"""
 from datetime import date, datetime
 
 from pydantic import BaseModel, ConfigDict

@@ -1,3 +1,7 @@
+"""HTTP endpoints for projects: list (with category/RAG/owner filters), get one
+with its milestones, risks and allocations, and create/update/delete. A thin layer
+over crud (data access) and serializers (ORM → response shape).
+"""
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 

@@ -1,3 +1,7 @@
+"""HTTP endpoints for resources (people): list (optionally filtered to active),
+get one with its allocations, and create/update/delete. Thin layer over crud +
+serializers.
+"""
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 

@@ -1,3 +1,7 @@
+"""HTTP endpoints for risks: list (optionally by project/status), get one, and
+create/update/delete. The score is recomputed from likelihood × impact on write so
+it always matches its two inputs (see crud.compute_risk_score).
+"""
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 

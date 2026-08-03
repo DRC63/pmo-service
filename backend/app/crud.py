@@ -1,8 +1,19 @@
+"""Database access helpers — the create/read/update/delete operations behind the
+API routers, one small function per action.
+
+Keeping the queries here rather than in the routers keeps the HTTP layer thin and
+lets the same operations be reused and unit-tested without a request. Writes commit
+immediately and refresh the object, so the caller gets server-set fields (id,
+timestamps) back on the returned instance.
+"""
 from sqlalchemy.orm import Session
 
 from . import models, schemas
 
 
+# Risk score = likelihood × impact (each rated 1–5). Defined once here so the
+# routers and the seed data all compute it the same way and the stored score stays
+# consistent with the two inputs.
 def compute_risk_score(likelihood: int, impact: int) -> int:
     return likelihood * impact
 

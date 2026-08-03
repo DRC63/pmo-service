@@ -1,3 +1,11 @@
+"""FastAPI application entry point for the PMO Service.
+
+On import this module creates the database tables, seeds sample data when the
+database is empty, configures CORS, installs the legacy-domain redirect, wires up
+the feature routers (projects, milestones, resources, allocations, risks,
+dashboard, reports), and — in production only — serves the built React frontend so
+the whole app runs from a single origin.
+"""
 import os
 from pathlib import Path
 

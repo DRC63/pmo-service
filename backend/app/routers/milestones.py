@@ -1,3 +1,7 @@
+"""HTTP endpoints for milestones. They are nested under a project
+(/api/projects/{project_id}/milestones) for listing and creation, with
+update/delete/reorder acting on a milestone by id.
+"""
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 

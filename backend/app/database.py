@@ -1,3 +1,10 @@
+"""Database engine, session factory and the FastAPI DB dependency.
+
+SQLite by default (a local pmo.db file); set DATABASE_URL to a Postgres URL to make
+the data durable in production. check_same_thread=False is required because FastAPI
+handles requests across a thread pool, and SQLite otherwise refuses to reuse a
+connection from a different thread.
+"""
 import os
 
 from dotenv import load_dotenv
@@ -17,6 +24,9 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
+# Per-request database session, used as a FastAPI dependency. The session is
+# yielded to the request handler and always closed afterwards — even if the handler
+# raises — so connections are never leaked.
 def get_db():
     db = SessionLocal()
     try:
