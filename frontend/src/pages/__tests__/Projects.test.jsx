@@ -1,3 +1,5 @@
+// Unit test for the Projects page: the API is mocked, and the test asserts the
+// project list renders and the create flow opens the form.
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { describe, it, expect, vi, beforeEach } from 'vitest';

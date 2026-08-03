@@ -1,3 +1,6 @@
+// Projects list page: a filterable table of all projects (category and RAG shown as
+// badges), a "New project" button that opens the ProjectForm in a modal, and row
+// clicks that navigate to the project's detail page.
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { api } from '../api/client';
@@ -22,6 +25,9 @@ export default function Projects() {
   const [filters, setFilters] = useState({ category: '', rag_status: '' });
   const [showForm, setShowForm] = useState(false);
 
+  // Fetch the (filtered) project list plus the resource list the create form needs
+  // for its owner dropdown. Filtering is server-side, so this reloads when a filter
+  // changes (see the effect below).
   async function load() {
     setLoading(true);
     setError(null);
@@ -39,6 +45,8 @@ export default function Projects() {
     }
   }
 
+  // Reload whenever a filter changes. (exhaustive-deps is disabled because `load`
+  // closes over `filters`; listing the primitive filter values is what we want.)
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps

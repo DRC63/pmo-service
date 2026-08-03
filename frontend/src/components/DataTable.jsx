@@ -1,3 +1,8 @@
+// Reusable data table shared by the list pages. `columns` describe each column
+// ({ key, label, numeric?, render? }) and `rows` are the data. A column's optional
+// render(row) lets a cell show a component (a badge, an allocation bar) instead of
+// a raw value. Shows an empty-state message when there are no rows, and makes rows
+// clickable when onRowClick is supplied (used to open a detail page).
 export default function DataTable({ columns, rows, emptyMessage = 'No data yet.', rowKey = 'id', onRowClick }) {
   if (!rows || rows.length === 0) {
     return (

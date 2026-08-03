@@ -1,3 +1,5 @@
+// Reports page: portfolio and per-project status summaries for stakeholders, pulled
+// from the backend's report rollups and shown as tables. Read-only.
 import { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import DataTable from '../components/DataTable';
@@ -11,6 +13,8 @@ const CATEGORY_LABELS = {
   other: 'Other',
 };
 
+// Portfolio tab: one row per project — RAG, milestone progress, open/top risk and
+// budget vs actual — the at-a-glance status table for the whole portfolio.
 function PortfolioSummary() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,6 +44,9 @@ function PortfolioSummary() {
   return <DataTable columns={columns} rows={rows} rowKey="project_id" emptyMessage="No projects yet." />;
 }
 
+// Project tab: a single project's full status report, chosen from the dropdown —
+// headline stats plus its milestones, risks and allocations. Reloads when the
+// selected project changes.
 function ProjectDetailReport({ projects }) {
   const [selectedId, setSelectedId] = useState(projects[0]?.id || '');
   const [report, setReport] = useState(null);
@@ -124,6 +131,8 @@ function StatMini({ label, value }) {
   );
 }
 
+// Reports page: a two-tab switch between the portfolio summary and a per-project
+// report. The project list is loaded once for the project-report dropdown.
 export default function Reports() {
   const [tab, setTab] = useState('portfolio');
   const [projects, setProjects] = useState([]);

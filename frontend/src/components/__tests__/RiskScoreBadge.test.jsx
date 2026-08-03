@@ -1,3 +1,4 @@
+// Unit test for RiskScoreBadge: the score value and its severity colour tier.
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import RiskScoreBadge from '../RiskScoreBadge';

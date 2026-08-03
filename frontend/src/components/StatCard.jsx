@@ -1,3 +1,5 @@
+// Small labelled figure for the dashboard: a headline number above its caption.
+// Presentational only.
 export default function StatCard({ label, value }) {
   return (
     <div className="stat-card">

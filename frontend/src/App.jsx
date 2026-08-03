@@ -1,3 +1,7 @@
+// Top-level component: the router and the seven routes (Dashboard, Projects,
+// Project Detail, Resources, Risks, Reports, Settings), each wrapped in the shared
+// AppLayout via the small Page helper. The router basename comes from the Vite base
+// path, so one build works at the root locally and under /pmo behind the front door.
 import { BrowserRouter, Route, Routes } from 'react-router';
 import AppLayout from './layout/AppLayout';
 import Dashboard from './pages/Dashboard';

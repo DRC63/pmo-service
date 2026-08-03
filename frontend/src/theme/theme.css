@@ -1,3 +1,12 @@
+/* Global stylesheet for the PMO Service UI.
+ *
+ * The design tokens (brand navy/gold, greys, spacing, radii, shadows) are defined
+ * once as CSS custom properties on :root, and every rule below references them —
+ * so a colour or spacing change is made in one place. The rules are grouped by
+ * area (layout, sidebar, top bar, cards, buttons, badges, tables, forms). Semantic
+ * colours reused across the app: green/amber/red carry RAG and risk-severity
+ * meaning, gold is the brand accent for primary actions.
+ */
 :root {
   --color-primary: #0B2545;
   --color-primary-dark: #071830;
@@ -47,11 +56,13 @@ h3 { font-size: 1.05rem; }
 p { color: var(--color-text-muted); }
 
 /* ---------- App shell ---------- */
+/* ---- App shell & page layout (sidebar + content column) ---- */
 .app-shell {
   display: flex;
   min-height: 100vh;
 }
 
+/* ---- Sidebar navigation ---- */
 .sidebar {
   width: var(--sidebar-width);
   flex-shrink: 0;
@@ -102,6 +113,7 @@ p { color: var(--color-text-muted); }
   min-width: 0;
 }
 
+/* ---- Top bar (page title + brand) ---- */
 .topbar {
   height: var(--topbar-height);
   display: flex;
@@ -123,6 +135,7 @@ p { color: var(--color-text-muted); }
 }
 
 /* ---------- Shared components ---------- */
+/* ---- Cards & stat tiles ---- */
 .card {
   background: var(--color-white);
   border-radius: var(--radius-md);
@@ -145,6 +158,7 @@ p { color: var(--color-text-muted); }
 .stat-card .stat-label { font-size: 0.82rem; color: var(--color-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px; }
 .stat-card .stat-value { font-size: 1.9rem; font-weight: 700; color: var(--color-primary); }
 
+/* ---- Buttons (primary = brand navy, accent = gold, outline, danger) ---- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -166,6 +180,7 @@ p { color: var(--color-text-muted); }
 .btn-sm { padding: 6px 14px; font-size: 0.82rem; }
 
 /* ---------- Badges ---------- */
+/* ---- Status badges: RAG (green/amber/red), risk severity, active/inactive ---- */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -182,6 +197,7 @@ p { color: var(--color-text-muted); }
 .badge-grey { background: var(--color-bg-alt); color: var(--color-text-muted); }
 
 /* ---------- Tables ---------- */
+/* ---- Data tables (list pages) — horizontal scroll on small screens ---- */
 .data-table-wrap { overflow-x: auto; border-radius: var(--radius-md); background: var(--color-white); box-shadow: var(--shadow-sm); }
 .data-table { width: 100%; border-collapse: collapse; min-width: 600px; }
 .data-table th, .data-table td { padding: 13px 20px; text-align: left; border-bottom: 1px solid var(--color-bg-alt); }
@@ -192,6 +208,7 @@ p { color: var(--color-text-muted); }
 .data-table-empty { padding: 40px; text-align: center; color: var(--color-text-muted); }
 
 /* ---------- Forms ---------- */
+/* ---- Forms (create/edit modals) ---- */
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .form-field { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
 .form-field label { font-weight: 600; font-size: 0.85rem; }

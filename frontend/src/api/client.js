@@ -2,6 +2,10 @@
 // shared front door: '/api' at the root, '/pmo/api' when built with APP_BASE.
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '') + '/api';
 
+// Single fetch wrapper behind every API call below. Sends JSON, and turns any
+// non-2xx response into a thrown Error carrying the method, path, status and body
+// so callers can surface a real message instead of a silent failure. A 204 (No
+// Content, e.g. a successful delete) returns null rather than parsing an empty body.
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
     headers: { 'Content-Type': 'application/json' },
@@ -59,6 +63,8 @@ export const api = {
   getProjectReport: (id) => get(`/reports/project/${id}`),
 };
 
+// Build a query string from a params object, dropping empty/null/undefined values
+// so the URL only carries parameters that are actually set. Returns '' when none.
 function qs(params) {
   const entries = Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== '');
   if (!entries.length) return '';

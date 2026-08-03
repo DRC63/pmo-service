@@ -1,3 +1,5 @@
+// Unit test for the Dashboard page: the summary API is mocked, and the test asserts
+// the loaded portfolio figures render.
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { describe, it, expect, vi } from 'vitest';

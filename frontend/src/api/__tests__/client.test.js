@@ -1,3 +1,5 @@
+// Unit tests for the API client: verifies it builds the right URLs, throws on a
+// non-2xx response, and returns parsed JSON — with fetch mocked so no backend runs.
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { api } from '../client';
 

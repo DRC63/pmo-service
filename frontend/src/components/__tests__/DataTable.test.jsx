@@ -1,3 +1,4 @@
+// Unit test for DataTable: column rendering, the empty state, and row-click.
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import DataTable from '../DataTable';

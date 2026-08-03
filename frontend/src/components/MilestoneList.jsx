@@ -1,5 +1,10 @@
 import { useState } from 'react';
 
+// The milestone table on a project's detail page: lists milestones (flagging any
+// overdue), lets the status be changed inline, delete a row, and add a new one via
+// the form at the bottom. It holds only the new-milestone form fields; every change
+// is reported to the parent through onCreate/onUpdate/onDelete, which own the API
+// calls and the reload.
 const STATUS_OPTIONS = ['not_started', 'in_progress', 'complete', 'late'];
 
 export default function MilestoneList({ milestones, onCreate, onUpdate, onDelete }) {
@@ -7,6 +12,9 @@ export default function MilestoneList({ milestones, onCreate, onUpdate, onDelete
   const [newDue, setNewDue] = useState('');
   const [adding, setAdding] = useState(false);
 
+  // Add a milestone from the inline form. New milestones start "not started"; the
+  // due date is optional. `adding` disables the button so a slow save can't be
+  // double-submitted.
   async function handleAdd(e) {
     e.preventDefault();
     if (!newName) return;

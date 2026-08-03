@@ -1,3 +1,6 @@
+// Create/edit form for a resource (a person): name, role, email, weekly capacity
+// hours and the active flag. `initial` is null in create mode. onSubmit receives
+// the payload; the parent performs the API call.
 import { useState } from 'react';
 
 export default function ResourceForm({ initial, onSubmit, onCancel }) {
@@ -15,6 +18,9 @@ export default function ResourceForm({ initial, onSubmit, onCancel }) {
     setForm((f) => ({ ...f, [field]: value }));
   }
 
+  // Coerce capacity to a number (form inputs yield strings) and hand off to the
+  // parent's onSubmit, which owns the create/update call. On error, surface the
+  // message and re-enable the form so the user can retry.
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);

@@ -1,3 +1,6 @@
+// Risk register page: every risk across all projects in one table, filterable by
+// project, status and minimum score, with create/edit via the RiskForm modal. Score
+// is shown as a colour-coded badge so high-severity risks stand out.
 import { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import DataTable from '../components/DataTable';
@@ -14,6 +17,9 @@ export default function Risks() {
   const [filters, setFilters] = useState({ project_id: '', status: '', min_score: '' });
   const [modal, setModal] = useState(null); // null | 'new' | risk object
 
+  // Fetch the (filtered) risks plus the project and resource lists the filter
+  // dropdowns and the risk form need. Filtering is done server-side, so this
+  // reloads whenever a filter changes (see the effect below).
   async function load() {
     setLoading(true);
     setError(null);
@@ -38,6 +44,8 @@ export default function Risks() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters.project_id, filters.status, filters.min_score]);
 
+  // One handler for both create and edit: `modal` is 'new' when adding, or the risk
+  // object being edited. Update when it's a real risk, otherwise create.
   async function handleSave(data) {
     if (modal && modal !== 'new') {
       await api.updateRisk(modal.id, data);

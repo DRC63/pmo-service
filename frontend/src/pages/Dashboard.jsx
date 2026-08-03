@@ -1,3 +1,6 @@
+// Dashboard page: the portfolio at a glance. Loads the aggregate summary from the
+// backend (project and RAG counts, upcoming milestones, high-severity risks) and
+// lays it out as stat cards and short lists. Read-only — no editing here.
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { api } from '../api/client';
@@ -16,6 +19,8 @@ export default function Dashboard() {
       .finally(() => setLoading(false));
   }, []);
 
+  // Guard clauses keep the render simple: the layout below can assume `summary` is
+  // present, so it doesn't need per-field null checks.
   if (loading) return <p className="muted">Loading…</p>;
   if (error) return <p style={{ color: 'var(--color-danger)' }}>{error}</p>;
   if (!summary) return null;
@@ -29,6 +34,7 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Headline counts: total projects, the RAG breakdown, and overdue milestones. */}
       <div className="stat-row">
         <StatCard label="Total Projects" value={summary.total_projects} />
         <StatCard label="Green" value={summary.rag_counts.green ?? 0} />

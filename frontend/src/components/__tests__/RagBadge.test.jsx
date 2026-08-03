@@ -1,3 +1,4 @@
+// Unit test for RagBadge: the label text and colour class for each RAG status.
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import RagBadge from '../RagBadge';

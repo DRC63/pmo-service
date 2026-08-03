@@ -1,3 +1,4 @@
+// Unit test for AllocationBar: the fill width and the over-allocation styling.
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import AllocationBar from '../AllocationBar';

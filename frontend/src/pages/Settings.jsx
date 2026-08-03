@@ -1,3 +1,5 @@
+// Settings page: reference data and application configuration (e.g. the project
+// category list). Mostly informational in this version.
 import { Link } from 'react-router';
 
 const CATEGORIES = [

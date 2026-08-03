@@ -1,3 +1,6 @@
+// Resources page: a table of people with their total allocation (an AllocationBar
+// flags over-commitment), create/edit via the ResourceForm modal, and an expandable
+// row that reveals a resource's per-project allocations.
 import { useEffect, useState } from 'react';
 import { api } from '../api/client';
 import DataTable from '../components/DataTable';
@@ -14,6 +17,8 @@ export default function Resources() {
   const [editing, setEditing] = useState(null);
   const [expandedId, setExpandedId] = useState(null);
 
+  // Load people and their allocations together — the table needs both to show each
+  // person's total commitment across projects. Runs on mount and after any change.
   async function load() {
     setLoading(true);
     setError(null);
@@ -35,6 +40,9 @@ export default function Resources() {
     load();
   }, []);
 
+  // A resource's total commitment = the sum of its allocation percentages across
+  // every project. This can exceed 100%, which is exactly the over-allocation the
+  // AllocationBar highlights in red.
   function totalAllocationFor(resourceId) {
     return allocations
       .filter((a) => a.resource_id === resourceId)
@@ -68,6 +76,8 @@ export default function Resources() {
     {
       key: 'actions',
       label: '',
+      // stopPropagation so clicking Edit/Delete doesn't also trigger the row's
+      // click handler (which toggles the allocation detail open/closed).
       render: (r) => (
         <div className="flex-row">
           <button className="btn btn-outline btn-sm" onClick={(e) => { e.stopPropagation(); setEditing(r); }} type="button">Edit</button>
@@ -77,6 +87,8 @@ export default function Resources() {
     },
   ];
 
+  // Clicking a row expands it to show that person's per-project allocations below
+  // the table; clicking the same row again collapses it (expandedId → null).
   const expandedResource = resources.find((r) => r.id === expandedId);
   const expandedAllocations = allocations.filter((a) => a.resource_id === expandedId);
 

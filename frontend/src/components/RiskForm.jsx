@@ -1,5 +1,9 @@
 import { useState } from 'react';
 
+// Create/edit form for a risk. `initial` null = create. `fixedProjectId` locks the
+// project (used when adding a risk from a project's detail page); otherwise the
+// project is picked from `projects`. The score isn't entered here — the backend
+// derives it from likelihood × impact — so the form only collects those two.
 const STATUS_OPTIONS = ['open', 'mitigating', 'closed'];
 
 export default function RiskForm({ initial, projects, resources, fixedProjectId, onSubmit, onCancel }) {
@@ -20,6 +24,9 @@ export default function RiskForm({ initial, projects, resources, fixedProjectId,
     setForm((f) => ({ ...f, [field]: value }));
   }
 
+  // Coerce the numeric fields (project, likelihood, impact) to numbers and turn an
+  // empty owner into null. The score is left to the backend to compute from
+  // likelihood × impact, so it isn't sent.
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);

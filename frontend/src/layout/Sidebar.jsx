@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router';
 import logo from '../assets/logo-triangle-white.svg';
 
+// Left navigation sidebar: the app's primary routes plus a link back to the P3MAI
+// marketing site. The active route is highlighted by react-router's NavLink.
 const LINKS = [
   { to: '/', label: 'Dashboard', end: true },
   { to: '/projects', label: 'Projects' },

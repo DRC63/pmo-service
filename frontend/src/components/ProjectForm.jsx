@@ -1,3 +1,7 @@
+// Create/edit form for a project. `initial` is null in create mode, or the project
+// being edited. Collects name, code, category, RAG status, owner, dates, budget and
+// description, then hands a normalised payload to onSubmit — the parent owns the
+// actual save and reload.
 import { useState } from 'react';
 
 const CATEGORIES = [
@@ -29,6 +33,8 @@ export default function ProjectForm({ initial, resources, onSubmit, onCancel }) 
     setForm((f) => ({ ...f, [field]: value }));
   }
 
+  // Normalise before handing off: empty optional fields become null (not ""), and
+  // the numeric fields are coerced to numbers. The parent's onSubmit does the save.
   async function handleSubmit(e) {
     e.preventDefault();
     setSaving(true);

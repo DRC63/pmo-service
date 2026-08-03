@@ -1,3 +1,7 @@
+// Project detail page: the full record for one project — its fields, milestones
+// (via MilestoneList), risks and allocations — with edit/delete and the ability to
+// add risks and milestones. Reloads the project after any change so the view always
+// reflects the saved state.
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { api } from '../api/client';
@@ -17,8 +21,11 @@ export default function ProjectDetail() {
   const [error, setError] = useState(null);
   const [showEditForm, setShowEditForm] = useState(false);
   const [riskModal, setRiskModal] = useState(null); // null | 'new' | risk object
+  // Draft state for the "add allocation" row; 50% is a sensible default commitment.
   const [newAlloc, setNewAlloc] = useState({ resource_id: '', allocation_pct: 50, start_date: '', end_date: '' });
 
+  // Load the project (with its milestones, risks and allocations) plus the resource
+  // list needed by the allocation and risk forms. Runs on mount and after any edit.
   async function load() {
     setLoading(true);
     setError(null);
@@ -48,17 +55,23 @@ export default function ProjectDetail() {
     load();
   }
 
+  // Deleting a project cascades to its milestones, risks and allocations on the
+  // backend (see the models), so we confirm the wider impact, then navigate away
+  // because the record being viewed no longer exists.
   async function handleDelete() {
     if (!window.confirm(`Delete project "${project.name}"? This also removes its milestones, risks, and allocations.`)) return;
     await api.deleteProject(id);
     navigate('/projects');
   }
 
+  // RAG can be changed inline from the header without opening the full edit form.
   async function handleRagChange(newRag) {
     await api.updateProject(id, { rag_status: newRag });
     load();
   }
 
+  // Milestone add/update/delete: each just calls the API then reloads so the list
+  // (and the project's derived progress) always reflects the saved state.
   async function handleAddMilestone(data) {
     await api.createMilestone(id, data);
     load();
@@ -72,6 +85,8 @@ export default function ProjectDetail() {
     load();
   }
 
+  // One handler for adding and editing a risk: riskModal is 'new' when adding, or
+  // the risk being edited. New risks are created against this project.
   async function handleSaveRisk(data) {
     if (riskModal && riskModal !== 'new') {
       await api.updateRisk(riskModal.id, data);
@@ -87,6 +102,9 @@ export default function ProjectDetail() {
     load();
   }
 
+  // Add an allocation of a resource to this project. Only resources not already
+  // allocated here are offered (see availableResources), because the backend allows
+  // just one allocation per resource/project pair.
   async function handleAddAllocation(e) {
     e.preventDefault();
     if (!newAlloc.resource_id) return;
@@ -105,6 +123,8 @@ export default function ProjectDetail() {
     load();
   }
 
+  // Resources not yet allocated to this project — the only valid choices for a new
+  // allocation, since a resource can appear on a project at most once.
   const availableResources = resources.filter(
     (r) => !project.allocations.some((a) => a.resource_id === r.id)
   );
