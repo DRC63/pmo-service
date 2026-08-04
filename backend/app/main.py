@@ -17,10 +17,14 @@ from fastapi.staticfiles import StaticFiles
 
 from .database import Base, SessionLocal, engine
 from .models import Project
+from .observability import init_sentry
 from .routers import allocations, dashboard, milestones, projects, reports, resources, risks
 from .seed import seed as seed_db
 
 load_dotenv()
+
+# Error tracking - no-op unless SENTRY_DSN is set (see observability.py).
+init_sentry("pmo-service")
 
 Base.metadata.create_all(bind=engine)
 
