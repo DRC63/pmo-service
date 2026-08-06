@@ -133,7 +133,7 @@ def footer(doc, classification, version):
     usable = sec.page_width - sec.left_margin - sec.right_margin
     tabs.add_tab_stop(int(usable / 2), WD_TAB_ALIGNMENT.CENTER)
     tabs.add_tab_stop(int(usable), WD_TAB_ALIGNMENT.RIGHT)
-    r = p.add_run("P3MAI Method Map"); _set_font(r, BODY_FONT, 8, GREY)
+    r = p.add_run("P3MAI PMO Service"); _set_font(r, BODY_FONT, 8, GREY)
     r = p.add_run("\t" + version + "\t"); _set_font(r, BODY_FONT, 8, GREY)
     r = p.add_run("Page "); _set_font(r, BODY_FONT, 8, GREY)
     _field(p, "PAGE");
@@ -150,7 +150,7 @@ def title_page(doc, doc_id, title, subtitle, version, date, author, classificati
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r = p.add_run("P3MAI"); _set_font(r, HEAD_FONT, 30, NAVY, bold=True)
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = p.add_run("METHOD MAP"); _set_font(r, HEAD_FONT, 14, GOLD_DARK, bold=True)
+    r = p.add_run("PMO SERVICE"); _set_font(r, HEAD_FONT, 14, GOLD_DARK, bold=True)
     r.font.spacing = Pt(2)
     doc.add_paragraph()
     _rule(doc, NAVY)
