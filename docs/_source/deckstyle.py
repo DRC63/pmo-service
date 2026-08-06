@@ -77,7 +77,7 @@ class Deck:
         self._rect(s, 0, 0, EMU_W, EMU_H, NAVY)
         self._rect(s, 0, Inches(4.55), EMU_W, Pt(3), GOLD)
         self._text(s, Inches(0.9), Inches(1.5), Inches(11.5), Inches(0.7),
-                   [("P3MAI  ·  METHOD MAP", 16, GOLD, True, HEAD_FONT)])
+                   [("P3MAI  ·  PMO SERVICE", 16, GOLD, True, HEAD_FONT)])
         self._text(s, Inches(0.9), Inches(2.6), Inches(11.5), Inches(1.8),
                    [(title, 40, WHITE, True, HEAD_FONT)])
         self._text(s, Inches(0.9), Inches(4.75), Inches(11.5), Inches(0.8),
