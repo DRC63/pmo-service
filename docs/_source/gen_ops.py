@@ -3,13 +3,16 @@ import os
 import docstyle as ds
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "03_Operation_Manual.docx")
-VER, DATE = "v1.0", "1 August 2026"
+VER, DATE = "v1.1", "6 August 2026"
 
 doc = ds.new_doc()
 ds.footer(doc, "OFFICIAL-SENSITIVE", VER)
 ds.title_page(doc, "DOC-03", "Operation Manual", "Running, deploying & maintaining the PMO Service",
               VER, DATE, "Douglas Colvin, P3MAI", "OFFICIAL-SENSITIVE")
-ds.doc_control(doc, [[VER, "2026-08-01", "Douglas Colvin", "Initial issue"]])
+ds.doc_control(doc, [
+    ["v1.0", "2026-08-01", "Douglas Colvin", "Initial issue"],
+    [VER, "2026-08-06", "Douglas Colvin", "Front-door move: served at apps.p3mai.com/pmo (APP_BASE=/pmo/), legacy app.p3mai.com 301s; CI + Dependabot; optional Sentry"],
+])
 ds.add_toc(doc)
 
 ds.heading(doc, "1.  Purpose & audience", 1)
@@ -22,7 +25,7 @@ ds.table(doc, ["Item", "Value"], [
     ["What", "Single-origin web app: FastAPI backend serving a React SPA, SQLite database"],
     ["Repository", "github.com/DRC63/pmo-service (private)"],
     ["Production", "Render Docker web service"],
-    ["URL", "app.p3mai.com (Render: pmo-service.onrender.com)"],
+    ["URL", "apps.p3mai.com/pmo (behind the apps front door; origin pmo-service.onrender.com)"],
     ["Database", "SQLite (pmo.db), auto-seeded on boot; ephemeral"],
     ["Dev ports", "backend 8000, frontend 5173"],
     ["Auth", "None in v1 (open) — flag before sensitive data"],
@@ -35,6 +38,8 @@ ds.table(doc, ["Variable", "Default", "Purpose"], [
     ["DATABASE_URL", "sqlite:///…/pmo.db", "SQLAlchemy URL; point at Postgres to persist"],
     ["CORS_ORIGINS", "http://localhost:5173", "Allowed origins in split local dev"],
     ["PORT", "8000", "Set by Render automatically; the container binds to it"],
+    ["APP_BASE", "/pmo/ (build arg)", "SPA base path for the front door; local dev builds use /"],
+    ["SENTRY_DSN", "(unset)", "Set in Render to activate error tracking; inert otherwise"],
 ], col_widths=[3.4, 4.6, 7.5])
 
 ds.heading(doc, "4.  Running locally", 1)
@@ -63,7 +68,9 @@ ds.para(doc, "Deployed on Render as a Docker web service built from the multi-st
         "re-seeds on boot, so a fresh container comes up populated.")
 ds.heading(doc, "6.1  Deploying a change", 2)
 ds.para(doc, "Commit and push to `main`; if auto-deploy is enabled on the Render service it rebuilds "
-        "automatically, otherwise trigger a manual deploy in the Render dashboard.")
+        "automatically, otherwise trigger a manual deploy in the Render dashboard. CI (pytest + "
+        "vitest) runs on every push; enable Render's wait-for-CI setting (ENG-13) to make a red "
+        "build block the deploy. Dependabot raises weekly dependency PRs.")
 ds.code_block(doc, "git add -A\ngit commit -m \"...\"\ngit push origin main")
 ds.heading(doc, "6.2  Rollback", 2)
 ds.para(doc, "In the Render dashboard, open the service → **Events**, find the previous good deploy and "
@@ -90,7 +97,7 @@ ds.para(doc, "The P3MAI website's Services page (PMO card) has an **Example** bu
         "real domain in production) so nothing needs editing between environments.")
 
 ds.heading(doc, "10.  Security operations", 1)
-ds.bullet(doc, "**No authentication in v1** — the app is open at app.p3mai.com by deliberate choice.")
+ds.bullet(doc, "**No authentication in v1** — the app is open at apps.p3mai.com/pmo by deliberate choice.")
 ds.bullet(doc, "**Do not store sensitive data** until authentication is added.")
 ds.bullet(doc, "This manual is OFFICIAL-SENSITIVE because it details deployment and the open posture.")
 

@@ -4,13 +4,16 @@ import docstyle as ds
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "01_Architecture_and_Design.docx")
 ASSETS = os.path.join(os.path.dirname(__file__), "..", "assets")
-VER, DATE = "v1.0", "1 August 2026"
+VER, DATE = "v1.1", "6 August 2026"
 
 doc = ds.new_doc()
 ds.footer(doc, "OFFICIAL", VER)
 ds.title_page(doc, "DOC-01", "Architecture & Design", "Technical design of the P3MAI PMO Service",
               VER, DATE, "Douglas Colvin, P3MAI", "OFFICIAL")
-ds.doc_control(doc, [[VER, "2026-08-01", "Douglas Colvin", "Initial issue"]])
+ds.doc_control(doc, [
+    ["v1.0", "2026-08-01", "Douglas Colvin", "Initial issue"],
+    [VER, "2026-08-06", "Douglas Colvin", "Front-door move: served at apps.p3mai.com/pmo (APP_BASE=/pmo/), legacy app.p3mai.com 301s; CI + Dependabot; optional Sentry"],
+])
 ds.add_toc(doc)
 
 ds.heading(doc, "1.  Executive summary", 1)
@@ -19,7 +22,7 @@ ds.para(doc, "The **PMO Service** is an internal project-management-office tool 
         "**dashboard** and **portfolio/project reports**. It is a single-origin web application — a "
         "**FastAPI** backend serving a **React** single-page front end, backed by **SQLite** that "
         "auto-seeds a realistic sample portfolio on first boot.")
-ds.para(doc, "It is deployed as a Docker container on Render at **app.p3mai.com**. Version 1 has **no "
+ds.para(doc, "It is deployed as a Docker container on Render, served at **apps.p3mai.com/pmo** behind the apps.p3mai.com front door (legacy app.p3mai.com 301-redirects there). Version 1 has **no "
         "authentication** by deliberate choice (single-user, non-sensitive demo/working data).")
 
 ds.heading(doc, "2.  Introduction", 1)
@@ -125,17 +128,18 @@ ds.para(doc, "On first boot against an empty database the app seeds a realistic 
 
 ds.heading(doc, "10.  Security & access control", 1)
 ds.callout(doc, "pitfall", "No authentication in v1",
-           ["The app has no login and is deployed openly at app.p3mai.com — a deliberate choice for a "
+           ["The app has no login and is deployed openly at apps.p3mai.com/pmo — a deliberate choice for a "
             "single-user tool holding non-sensitive demo/working data. Add authentication before it "
             "holds anything sensitive."])
 
 ds.heading(doc, "11.  Deployment architecture", 1)
+ds.para(doc, "The SPA is built with a **base path of /pmo/** (Docker build arg `APP_BASE`, defaulting to /pmo/) so the whole app serves correctly behind the front door; backend middleware 301-redirects the legacy app.p3mai.com domain to apps.p3mai.com/pmo. CI (`ci.yml`: pytest + vitest) and Dependabot run on the repository; optional Sentry error tracking activates when `SENTRY_DSN` is set. ")
 ds.para(doc, "Deployed on Render as a Docker web service built from the multi-stage `Dockerfile`. The "
         "database re-seeds on every boot, so a fresh or restarted container comes up populated.")
 ds.table(doc, ["Aspect", "Value"], [
     ["Repository", "github.com/DRC63/pmo-service (private)"],
     ["Platform", "Render — Docker web service"],
-    ["URL", "app.p3mai.com (Render: pmo-service.onrender.com)"],
+    ["URL", "apps.p3mai.com/pmo (behind the apps front door; origin pmo-service.onrender.com)"],
     ["Persistence", "Ephemeral disk — DB resets on redeploy; auto-seeds"],
 ], col_widths=[3.4, 12.1])
 

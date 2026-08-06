@@ -17,7 +17,7 @@ d.table("Technology stack", ["Layer", "Technology"], [
     ["Backend", "FastAPI + SQLAlchemy + SQLite"],
     ["Front end", "React 19 + Vite, react-router"],
     ["Packaging", "Docker (multi-stage), single image"],
-    ["Hosting", "Render — Docker web service (app.p3mai.com)"],
+    ["Hosting", "Render — Docker web service (apps.p3mai.com/pmo via the front door)"],
 ], col_widths=[3.5, 8.6])
 d.image("Deployment architecture", A("pmo_deployment.png"),
         lead="One container serves the API and the built React app.")
@@ -96,7 +96,7 @@ d.title_slide("Operation Manual", "Running, deploying & maintaining the PMO Serv
 d.table("System at a glance", ["Item", "Value"], [
     ["Repository", "github.com/DRC63/pmo-service (private)"],
     ["Production", "Render Docker web service"],
-    ["URL", "app.p3mai.com (pmo-service.onrender.com)"],
+    ["URL", "apps.p3mai.com/pmo (origin: pmo-service.onrender.com)"],
     ["Database", "SQLite, auto-seeded on boot; ephemeral"],
     ["Dev ports", "backend 8000 · frontend 5173"],
 ], col_widths=[3.2, 8.9])

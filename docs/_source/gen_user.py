@@ -4,13 +4,16 @@ import docstyle as ds
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "02_User_Manual.docx")
 ASSETS = os.path.join(os.path.dirname(__file__), "..", "assets")
-VER, DATE = "v1.0", "1 August 2026"
+VER, DATE = "v1.1", "6 August 2026"
 
 doc = ds.new_doc()
 ds.footer(doc, "OFFICIAL", VER)
 ds.title_page(doc, "DOC-02", "User Manual", "Using the P3MAI PMO Service",
               VER, DATE, "Douglas Colvin, P3MAI", "OFFICIAL")
-ds.doc_control(doc, [[VER, "2026-08-01", "Douglas Colvin", "Initial issue"]])
+ds.doc_control(doc, [
+    ["v1.0", "2026-08-01", "Douglas Colvin", "Initial issue"],
+    [VER, "2026-08-06", "Douglas Colvin", "Front-door move: served at apps.p3mai.com/pmo (APP_BASE=/pmo/), legacy app.p3mai.com 301s; CI + Dependabot; optional Sentry"],
+])
 ds.add_toc(doc)
 
 ds.heading(doc, "1.  Welcome", 1)
@@ -18,7 +21,7 @@ ds.para(doc, "The **PMO Service** is P3MAI's project-management-office tool. In 
         "your **projects**, their **milestones**, the **people** working on them and how they are "
         "**allocated**, the **risks**, and see it all rolled up on a **dashboard** and in **reports**.")
 ds.heading(doc, "1.1  Getting in", 2)
-ds.para(doc, "Open **app.p3mai.com** in a web browser, or use the **Example** button on the PMO card of "
+ds.para(doc, "Open **apps.p3mai.com/pmo** in a web browser, or use the **Example** button on the PMO card of "
         "the P3MAI website's Services page. There is no login. Nothing to install.")
 ds.callout(doc, "note", "Sample data",
            ["The app comes pre-loaded with a realistic sample portfolio so you can explore every screen "

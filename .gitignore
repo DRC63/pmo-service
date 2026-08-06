@@ -14,3 +14,6 @@ frontend/dist-ssr/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Python bytecode (docs generators)
+__pycache__/

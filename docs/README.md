@@ -13,7 +13,7 @@ PowerPoint summary, plus a house style and generated diagrams.
 | DOC-02 | **User Manual** — dashboard, projects, milestones, resources, risks, reports | [02_User_Manual.docx](02_User_Manual.docx) | [02_…_Summary.pptx](02_User_Manual_Summary.pptx) |
 | DOC-03 | **Operation Manual** — configuration, data, deployment, monitoring, runbooks | [03_Operation_Manual.docx](03_Operation_Manual.docx) | [03_…_Summary.pptx](03_Operation_Manual_Summary.pptx) |
 
-All three are **v1.0, 1 August 2026**. DOC-03 is **OFFICIAL-SENSITIVE**; the others are **OFFICIAL**.
+All three are **v1.1, 6 August 2026** (v1.0 was 1 August; v1.1 reflects the apps.p3mai.com/pmo front-door move, APP_BASE, the legacy 301, CI + Dependabot and optional Sentry). DOC-03 is **OFFICIAL-SENSITIVE**; the others are **OFFICIAL**.
 
 ## Regenerating
 

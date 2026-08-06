@@ -55,7 +55,7 @@ box(ax, 7.5, 2.55, 2.7, 0.95, "Seed data", fill=GOLDD, sub="sample portfolio")
 arrow(ax, 7.5, 3.02, 7.2, 3.02, color=NAVY, style="-|>")
 ax.text(7.35, 3.5, "seeds DB\non boot", ha="center", va="bottom", color=GREY, fontsize=7.5, fontstyle="italic")
 arrow(ax, 2.6, 4.75, 4.1, 4.75, color=NAVYL, text="HTTPS", style="-|>")
-ax.text(3.35, 4.35, "app.p3mai.com", ha="center", fontsize=8, color=GOLDD, fontstyle="italic")
+ax.text(3.35, 4.35, "apps.p3mai.com/pmo", ha="center", fontsize=8, color=GOLDD, fontstyle="italic")
 box(ax, 4.1, 0.5, 6.4, 0.95, "GitHub  ·  DRC63/pmo-service", fill="white", fg=NAVY, edge=GREY)
 arrow(ax, 7.3, 1.45, 7.3, 2.2, color=GOLD, text="push → deploy (Docker build)", style="-|>")
 ax.text(6, 0.05, "No authentication in v1 — deployed openly (deliberate). Render disk is ephemeral; DB re-seeds on boot.",
